@@ -8,7 +8,7 @@ import IntegracionBackFront.backfront.Exceptions.Users.UsuarioCorreoDuplicadoExc
 import IntegracionBackFront.backfront.Models.DTO.Users.UserDTO;
 import IntegracionBackFront.backfront.Repositories.UserType.UserTypeRepository;
 import IntegracionBackFront.backfront.Repositories.Users.UserRepository;
-import IntegracionBackFront.backfront.Config.Crypto.Argon2Password;
+import IntegracionBackFront.backfront.Config.Argon2.Argon2Password;
 import IntegracionBackFront.backfront.Utils.PasswordGenerator;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -114,7 +114,7 @@ public class UserServices {
         UserEntity existente = repo.findById(id).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
         if (existente != null){
             String newPassword = PasswordGenerator.generateSecurePassword(12);
-            existente.setContrasena(argon2.EncryptPassword(newPassword));
+            existente.setContrasena(argon2.EncryptedPassword(newPassword));
             UserEntity usuarioActualizado = repo.save(existente);
             return true;
         }
@@ -165,7 +165,7 @@ public class UserServices {
         entity.setNombre(json.getNombre());
         entity.setApellido(json.getApellido());
         entity.setCorreo(json.getCorreo());
-        entity.setContrasena(argon2.EncryptPassword(json.getContrasena()));
+        entity.setContrasena(argon2.EncryptedPassword(json.getContrasena()));
         entity.setFechaRegistro(json.getFechaRegistro());
         if (json.getIdTipoUsuario() != null){
             UserTypeEntity entityType = repoUserType.findById(json.getIdTipoUsuario())

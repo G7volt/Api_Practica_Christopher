@@ -51,6 +51,7 @@ public class JWTUtils {
                 .compact();                                             // Convierte a String compacto
     }
 
+    //Para extraer el rol del token
     public String extractRol(String token){
         Claims claims = parseToken(token);
         return claims.get("rol",String.class);
